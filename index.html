@@ -21,6 +21,7 @@
         <!-- Style intro -->
   <style type="text/css">
     
+    
     @import url(https://fonts.googleapis.com/css?family=Open+Sans:600);
 
     
@@ -85,6 +86,37 @@
   </style>
     </head>
     <body id="page-top">
+        <!-- GitHub Stars and Forks -->
+        <div style="position: fixed; top: 10px; right: 10px; background-color: #f8f9fa; padding: 10px; border-radius: 5px; box-shadow: 0 0 10px rgba(0,0,0,0.1); z-index: 1000; display: flex; flex-direction: column; align-items: center;">
+            <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="GitHub Logo" style="width: 30px; height: 30px; margin-bottom: 5px;">
+            <div id="githubStats" style="font-size: 12px; text-align: center;">Loading...</div>
+        </div>
+
+        <script>
+            async function fetchGitHubStats() {
+                try {
+                    const response = await fetch('https://api.github.com/users/pankajmishra000/repos');
+                    const repos = await response.json();
+                    let stars = 0;
+                    let forks = 0;
+
+                    repos.forEach(repo => {
+                        stars += repo.stargazers_count;
+                        forks += repo.forks_count;
+                    });
+
+                    document.getElementById('githubStats').innerHTML = `
+                        <p>Stars: ${stars}</p>
+                        <p>Forks: ${forks}</p>
+                    `;
+                } catch (error) {
+                    document.getElementById('githubStats').innerHTML = 'Error loading data';
+                }
+            }
+
+            fetchGitHubStats();
+        </script>
+
         <!-- Navigation-->
         <nav class="navbar navbar-expand-lg navbar-light fixed-top py-3" id="mainNav">
             <div class="container">
@@ -229,9 +261,12 @@
                     </div>
                     <div class="col-lg-3 col-md-6 text-center">
                         <div class="mt-5">
-                            <a href="https://scholar.google.com/citations?user=oNsX0_8AAAAJ&hl=en" title="Google scholar" target="_blank"><i class="fab fa-4x fa-google text-primary mb-4"></i>
-                            <h3 class="h4 mb-2">Google scholar</h3></a>
+                            <a href="https://scholar.google.com/citations?user=oNsX0_8AAAAJ&hl=en" title="Google Scholar" target="_blank">
+                                <i class="fab fa-4x fa-google text-primary mb-4"></i>
+                                <h3 class="h4 mb-2">Google Scholar</h3>
+                            </a>
                             <p class="text-muted mb-0">It's all about my publications.</p>
+                            <p class="text-muted mb-0">Total Citations: <span id="totalCitations">383</span></p>
                         </div>
                     </div>
                 </div>
@@ -369,7 +404,7 @@
         </section>
         <!-- Footer-->
         <footer class="bg-light py-5">
-            <div class="container"><div class="small text-center text-muted">Copyright © 2021 - Created by: Pankaj Mishra - Helped by: Riccardo Verk</div></div>
+            <div class="container"><div class="small text-center text-muted">Copyright © 2021 - Created by: Pankaj Mishra with AI</div></div>
         </footer>
         <!-- Bootstrap core JS-->
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
@@ -384,6 +419,53 @@
 
         <!-- Core theme JS-->
         <script src="js/scripts.js"></script>
+
+        <!-- Trendlyne Widget -->
+        <div class="container mb-5">
+            <div class="row justify-content-center">
+                <div class="col-lg-8 text-center">
+                    <!-- Add search input -->
+                    <div class="form-group mb-4">
+                        <label for="tickerInput">Enter Stock Ticker:</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="tickerInput" placeholder="Enter ticker (e.g., RELIANCE)">
+                            <div class="input-group-append">
+                                <button class="btn btn-primary" onclick="updateWidget()">Search</button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Widget container -->
+                    <div id="widgetContainer">
+                        <blockquote class="trendlyne-widgets" 
+                            data-get-url="https://trendlyne.com/web-widget/swot-widget/Poppins/SVAMSOF/?posCol=00A25B&primaryCol=006AFF&negCol=EB3B00&neuCol=F7941E" 
+                            data-theme="light">
+                        </blockquote>
+                    </div>
+                    <script async src="https://cdn-static.trendlyne.com/static/js/webwidgets/tl-widgets.js" charset="utf-8"></script>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add JavaScript for widget update -->
+        <script>
+            function updateWidget() {
+                const ticker = document.getElementById('tickerInput').value.toUpperCase();
+                if (ticker) {
+                    const widgetContainer = document.getElementById('widgetContainer');
+                    widgetContainer.innerHTML = `
+                        <blockquote class="trendlyne-widgets" 
+                            data-get-url="https://trendlyne.com/web-widget/swot-widget/Poppins/${ticker}/?posCol=00A25B&primaryCol=006AFF&negCol=EB3B00&neuCol=F7941E" 
+                            data-theme="light">
+                        </blockquote>
+                    `;
+                    // Reload the widget script
+                    const script = document.createElement('script');
+                    script.src = 'https://cdn-static.trendlyne.com/static/js/webwidgets/tl-widgets.js';
+                    script.async = true;
+                    widgetContainer.appendChild(script);
+                }
+            }
+        </script>
     </body>
         <script type="text/javascript">
       
