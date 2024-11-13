@@ -10,6 +10,26 @@
  * Copyright 2011-2020 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  */
+ .stock-details {
+  padding: 20px;
+  background-color: #f8f9fa;
+  border-radius: 5px;
+}
+
+.stock-details .card {
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.stock-details p {
+  margin-bottom: 10px;
+}
+
+.stock-details span {
+  font-weight: bold;
+  color: #007bff;
+} 
+
+
 :root {
   --blue: #007bff;
   --indigo: #6610f2;

@@ -86,37 +86,6 @@
   </style>
     </head>
     <body id="page-top">
-        <!-- GitHub Stars and Forks -->
-        <div style="position: fixed; top: 10px; right: 10px; background-color: #f8f9fa; padding: 10px; border-radius: 5px; box-shadow: 0 0 10px rgba(0,0,0,0.1); z-index: 1000; display: flex; flex-direction: column; align-items: center;">
-            <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="GitHub Logo" style="width: 30px; height: 30px; margin-bottom: 5px;">
-            <div id="githubStats" style="font-size: 12px; text-align: center;">Loading...</div>
-        </div>
-
-        <script>
-            async function fetchGitHubStats() {
-                try {
-                    const response = await fetch('https://api.github.com/users/pankajmishra000/repos');
-                    const repos = await response.json();
-                    let stars = 0;
-                    let forks = 0;
-
-                    repos.forEach(repo => {
-                        stars += repo.stargazers_count;
-                        forks += repo.forks_count;
-                    });
-
-                    document.getElementById('githubStats').innerHTML = `
-                        <p>Stars: ${stars}</p>
-                        <p>Forks: ${forks}</p>
-                    `;
-                } catch (error) {
-                    document.getElementById('githubStats').innerHTML = 'Error loading data';
-                }
-            }
-
-            fetchGitHubStats();
-        </script>
-
         <!-- Navigation-->
         <nav class="navbar navbar-expand-lg navbar-light fixed-top py-3" id="mainNav">
             <div class="container">
@@ -243,6 +212,8 @@
                             <a  href="https://github.com/pankajmishra000", title="Github" target="_blank"><i class="fab fa-4x fa-github text-primary mb-4"></i>
                             <h3 class="h4 mb-2 js-scroll-trigger">Github</h3></a>                            
                             <p class="text-muted mb-0">Check my latest projects.</p>
+                            <p class="text-muted mb-0">Stars: <span id="github-stars">0</span></p>
+                            <p class="text-muted mb-0">Forks: <span id="github-forks">0</span></p>
                         </div>
                     </div>
                     <div class="col-lg-3 col-md-6 text-center">
@@ -570,4 +541,25 @@
           }
         }
     </script>
+    <script>
+        // Fetch all repositories for the user
+        fetch('https://api.github.com/users/pankajmishra000/repos')
+            .then(response => response.json())
+            .then(repos => {
+                let totalStars = 0;
+                let totalForks = 0;
+
+                // Sum up stars and forks for all repositories
+                repos.forEach(repo => {
+                    totalStars += repo.stargazers_count;
+                    totalForks += repo.forks_count;
+                });
+
+                // Update the HTML with the total stars and forks
+                document.getElementById('github-stars').textContent = totalStars;
+                document.getElementById('github-forks').textContent = totalForks;
+            })
+            .catch(error => console.error('Error fetching GitHub data:', error));
+    </script>
+ 
 </html>
